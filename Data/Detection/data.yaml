@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 6
+names: ['birth_date', 'expire_date', 'father_name', 'first_name', 'last_name', 'national_code']
+
+roboflow:
+  workspace: bubble-cayrh
+  project: persian-national-scanner-fydh1
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/bubble-cayrh/persian-national-scanner-fydh1/dataset/2
