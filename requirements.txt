@@ -1,0 +1,3 @@
+ultralytics == 8.4.60
+hezar[vision]
+fastapi[standard]
