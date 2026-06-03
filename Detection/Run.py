@@ -10,7 +10,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 class Detector:
     def __init__(self,conf=0.25 ,iou=0.7 ,max_det=6):
         model_dir = Path(__file__).parent
-        self.model = YOLO(f'{model_dir}/Weights/best2.pt')
+        self.model = YOLO(f'{model_dir}/Weights/best2.pt',task='detect')
         self.conf = conf 
         self.max_det = max_det
         self.iou = iou
@@ -35,9 +35,8 @@ class Detector:
     # Then returns related bounding boxes in xyxy format and also original image
     # If there was not any prediction for a class it will return None value in dictionary for the class 
     def top_per_class(self,result):
-        image = result.orig_img
         
-        print(image.shape)
+        image = result.orig_img
         classes = result.boxes.cls
         confs = result.boxes.conf
         boxes = result.boxes.xyxy

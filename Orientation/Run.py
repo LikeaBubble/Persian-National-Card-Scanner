@@ -10,7 +10,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 class AutoOrient:
     def __init__(self):
         path = Path(__file__).parent
-        self.model = YOLO(f'{path}/Weights/best3.pt')
+        self.model = YOLO(f'{path}/Weights/best3.pt',task='pose')
 
     
     def rotate(self,orig):
