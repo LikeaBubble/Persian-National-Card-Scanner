@@ -3,6 +3,7 @@
 An end-to-end document API that automatically extracts and validates information from Iranian national ID cards. Powered by FastAPI, YOLO, and Hezar OCR for real-world document processing. I have designed this application to be suitable for edge devices and fast enough. So far, I have achieved 900ms per card on CPU.
 
 Preview:  
+
 https://github.com/user-attachments/assets/3e801184-7ba1-4b10-bbdf-3ec79e6b3bf2
 
 # 🚀 What Problem This Solves
