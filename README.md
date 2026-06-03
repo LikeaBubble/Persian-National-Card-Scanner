@@ -79,7 +79,7 @@ pip install -r requirements.txt
 ```python
 python run.py
 ```
-The FastAPI server waits on localhost:8000 for image POST requests.
+The FastAPI server waits on localhost:8000 for image POST requests. open http://localhost:8000/docs
 
 # 🚧 Limitations & Future Work
 
