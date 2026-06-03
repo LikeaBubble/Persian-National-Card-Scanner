@@ -1,82 +1,67 @@
 # 🪪 Persian National Card Scanner
 
-An end-to-end document AI pipeline that automatically extracts and validates information from Iranian national ID cards. Built with computer vision and Persian OCR for real-world document processing.  
-You can test a preview of application here : https://iran-card-scanner.streamlit.app/  
+An end-to-end document API that automatically extracts and validates information from Iranian national ID cards. Powered by FastAPI, YOLO, and Hezar OCR for real-world document processing. I have designed this application to be suitable for edge devices and fast enough. So far, I have achieved 900ms per card on CPU.
 
-https://github.com/user-attachments/assets/5469ac0e-1ee3-4a25-973c-dab0ecd62c9a
-
-
-
+Preview:  
+https://github.com/user-attachments/assets/3e801184-7ba1-4b10-bbdf-3ec79e6b3bf2
 
 # 🚀 What Problem This Solves
 
-- Manual data entry from identity documents is:
+Manual data entry from identity documents is:
 
-- Time-consuming: 3-5 minutes per card
+- **Time-consuming** – 3–5 minutes per card  
+- **Error-prone** – 15% error rate in manual transcription  
+- **Inconsistent** – varies by operator skill level  
+- **Not scalable** – doesn't work for mobile/remote applications  
 
-- Error-prone: 15% error rate in manual transcription
-
-- Inconsistent: Varies by operator skill level
-
-- Not scalable: Doesn't work for mobile/remote applications
-
-- This solution automates the entire process with 90%+ accuracy in seconds.
+This solution automates the entire process with 90%+ accuracy in seconds.
 
 # 🏗️ Real-World Applications
 
-🏦 Banking: KYC verification and account opening
-
-🏛️ Government: Digital citizen services
-
-🏥 Healthcare: Patient registration
-
-📱 Tech: User onboarding and verification
-
-🚚 Logistics: Sender/recipient identity validation
+- 🏦 Banking: KYC verification and account opening  
+- 🏛️ Government: Digital citizen services  
+- 🏥 Healthcare: Patient registration  
+- 📱 Tech: User onboarding and verification  
+- 🚚 Logistics: Sender/recipient identity validation  
 
 # 🤖 Pipeline Architecture
 
 This system processes the document in a multi-stage pipeline:
 
-Input Image → 1. Orientation → 2. Detection → 3. Recognition → Validated Output
+`Input Image (using FastAPI) → 1. Orientation → 2. Detection → 3. Recognition → Validated JSON`
 
+## Orientation Correction (Orientation → run.py)
 
-## Orientation Correction (Orientation → Run.py)
+- A lightweight YOLO nano pose estimation model predicts the 4 corners of the card.  
+- Image rotation is applied.  
+- The perspective method in OpenCV flattens the image.
 
-- A CNN Model classifies card rotation into 8 angles (0° to 315° in 45° steps).
+## Region Detection (Detection → run.py)
 
-- Handles real-world scanning variations.
-
-- Returns a properly aligned card image.
-
-## Region Detection (Detection → Run.py)
-
-- A YOLOv8 (nano or small) model trained on 1000+ annotated card images.
-
-- Detects key regions: national_id, first_name, last_name, birth_date, father_name, expire_date.
-
+- A YOLO nano detection model is used to detect ROIs.  
+- Detects key regions: `national_id`, `first_name`, `last_name`, `birth_date`, `father_name`, `expire_date`.  
 - Returns a dictionary of cropped regions with confidence scores.
 
 ## Text Recognition & Validation (Recognition → OCR.py)
 
-- HezarOCR for state-of-the-art Persian text extraction.
-
-- Rule-based validation for data integrity (e.g., checking ID format).
-
+- HezarOCR for state-of-the-art Persian text extraction.  
+- Rule-based validation for data integrity (e.g., checking ID format).  
 - Outputs structured JSON with validated fields.
 
-## 📊 Results
+# 📊 Results
 
-Example Output  
-{  
-  "national_id": "0987654321",  
-  "first_name": "حسین",  
-  "last_name": "محمدی",  
-  "father_name": "علی",  
-  "birth_date": "1379/01/15",  
-  "expire_date": "1406/02/04"  
-}  
+Example Output:
 
+```json
+{
+  "national_id": "0987654321",
+  "first_name": "حسین",
+  "last_name": "محمدی",
+  "father_name": "علی",
+  "birth_date": "1379/01/15",
+  "expire_date": "1406/02/04"
+} 
+```
 
 ## 🛠️ Installation
 ```cmd
@@ -91,12 +76,9 @@ pip install -r requirements.txt
 
 ## 🎯 Usage
 ```python
-from Pipeline import pipeline  
-
-# Process a card image  
-result = pipeline.execute("path/to/card_image.jpg" or numpy array)  
-print(result)
+python run.py
 ```
+The FastAPI server waits on localhost:8000 for image POST requests.
 
 # 🚧 Limitations & Future Work
 
@@ -112,13 +94,9 @@ Current Limitations:
 
 - Fine tuning HezarOCR on related texts.
 
-- Improving orientation part.
+- Fine tuning the Pose and Det models on more data
 
-- Support for multiple cards in a single image.
-
-- Deployment as a cloud API (FastAPI).
-
-- Creation of a mobile SDK version for on-device processing.
+- Quantization and performance improvement for edge devices
 
 ## 📄 License
 
